@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.3">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.5.20"/>
+		<Timestamp>2020-01-15T02:51:39Z</Timestamp>
+	</Header>
+	<DataDictionary>
+		<DataField name="price" optype="continuous" dataType="double"/>
+		<DataField name="predictor_1" optype="continuous" dataType="double"/>
+		<DataField name="predictor_2" optype="continuous" dataType="double"/>
+		<DataField name="predictor_3" optype="continuous" dataType="double"/>
+		<DataField name="predictor_4" optype="continuous" dataType="double"/>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<NeuralNetwork functionName="regression" activationFunction="rectifier">
+		<MiningSchema>
+			<MiningField name="price" usageType="target"/>
+			<MiningField name="predictor_4"/>
+			<MiningField name="predictor_1"/>
+			<MiningField name="predictor_2"/>
+			<MiningField name="predictor_3"/>
+		</MiningSchema>
+		<LocalTransformations>
+			<DerivedField name="robust_scaler(predictor_1)" optype="continuous" dataType="double">
+				<Apply function="/">
+					<Apply function="-">
+						<FieldRef field="predictor_1"/>
+						<Constant dataType="double">109.5</Constant>
+					</Apply>
+					<Constant dataType="double">135.9</Constant>
+				</Apply>
+			</DerivedField>
+			<DerivedField name="robust_scaler(predictor_2)" optype="continuous" dataType="double">
+				<Apply function="/">
+					<Apply function="-">
+						<FieldRef field="predictor_2"/>
+						<Constant dataType="double">370.0</Constant>
+					</Apply>
+					<Constant dataType="double">156.0</Constant>
+				</Apply>
+			</DerivedField>
+			<DerivedField name="robust_scaler(predictor_3)" optype="continuous" dataType="double">
+				<Apply function="/">
+					<Apply function="-">
+						<FieldRef field="predictor_3"/>
+						<Constant dataType="double">-1.0</Constant>
+					</Apply>
+					<Constant dataType="double">112.5</Constant>
+				</Apply>
+			</DerivedField>
+		</LocalTransformations>
+		<NeuralInputs>
+			<NeuralInput id="input/1">
+				<DerivedField optype="continuous" dataType="double">
+					<FieldRef field="robust_scaler(predictor_1)"/>
+				</DerivedField>
+			</NeuralInput>
+			<NeuralInput id="input/2">
+				<DerivedField optype="continuous" dataType="double">
+					<FieldRef field="robust_scaler(predictor_2)"/>
+				</DerivedField>
+			</NeuralInput>
+			<NeuralInput id="input/3">
+				<DerivedField optype="continuous" dataType="double">
+					<FieldRef field="robust_scaler(predictor_3)"/>
+				</DerivedField>
+			</NeuralInput>
+			<NeuralInput id="input/4">
+				<DerivedField optype="continuous" dataType="double">
+					<FieldRef field="predictor_4"/>
+				</DerivedField>
+			</NeuralInput>
+		</NeuralInputs>
+		<NeuralLayer>
+			<Neuron id="1/1" bias="3.3941606699925333">
+				<Con from="input/1" weight="-0.5142098508358632"/>
+				<Con from="input/2" weight="2.078293703887375"/>
+				<Con from="input/3" weight="0.9302747805280555"/>
+				<Con from="input/4" weight="-0.10695077092710109"/>
+			</Neuron>
+			<Neuron id="1/2" bias="0.5564664853678134">
+				<Con from="input/1" weight="0.17213995515978692"/>
+				<Con from="input/2" weight="-0.43963793798975337"/>
+				<Con from="input/3" weight="0.44461796442052565"/>
+				<Con from="input/4" weight="-1.3024192999216393"/>
+			</Neuron>
+			<Neuron id="1/3" bias="2.694071615351701">
+				<Con from="input/1" weight="0.06967946955980167"/>
+				<Con from="input/2" weight="2.861480476092383"/>
+				<Con from="input/3" weight="0.22432281173104698"/>
+				<Con from="input/4" weight="-0.5985618291177597"/>
+			</Neuron>
+			<Neuron id="1/4" bias="1.3138371969383456">
+				<Con from="input/1" weight="0.2245947011872715"/>
+				<Con from="input/2" weight="0.5440244098396355"/>
+				<Con from="input/3" weight="-0.6035611636374255"/>
+				<Con from="input/4" weight="-0.2140900163388315"/>
+			</Neuron>
+		</NeuralLayer>
+		<NeuralLayer activationFunction="identity">
+			<Neuron id="2/1" bias="1.5697715124953397">
+				<Con from="1/1" weight="2.7606937127375524"/>
+				<Con from="1/2" weight="-0.0006081655296184"/>
+				<Con from="1/3" weight="-2.1591065835000804"/>
+				<Con from="1/4" weight="5.2489065051708192"/>
+			</Neuron>
+		</NeuralLayer>
+		<NeuralOutputs>
+			<NeuralOutput outputNeuron="2/1">
+				<DerivedField optype="continuous" dataType="double">
+					<FieldRef field="price"/>
+				</DerivedField>
+			</NeuralOutput>
+		</NeuralOutputs>
+		<ModelVerification recordCount="1">
+			<VerificationFields>
+				<VerificationField field="predictor_1" column="data:predictor_1"/>
+				<VerificationField field="predictor_2" column="data:predictor_2"/>
+				<VerificationField field="predictor_3" column="data:predictor_3"/>
+				<VerificationField field="predictor_4" column="data:predictor_4"/>
+				<VerificationField field="price" column="data:price" precision="1.0E-13" zeroThreshold="1.0E-13"/>
+			</VerificationFields>
+			<InlineTable>
+				<row>
+					<data:predictor_1>23.0</data:predictor_1>
+					<data:predictor_2>250.0</data:predictor_2>
+					<data:predictor_3>4.0</data:predictor_3>
+					<data:predictor_4>11.05</data:predictor_4>
+					<data:price>44.500013227963</data:price>
+				</row>
+			</InlineTable>
+		</ModelVerification>
+	</NeuralNetwork>
+</PMML>
