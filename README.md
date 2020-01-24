@@ -2,7 +2,7 @@
 C# demo of a PMML model originally trained with Python sklearn.neural_network.MLPRegressor
 
 ## Prerequisites
-  - C# 4.0
+  - .NET 3.1.1
 
 ## To run it
 ```
